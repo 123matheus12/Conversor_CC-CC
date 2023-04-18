@@ -96,7 +96,7 @@ def Solve_Dif_equations():
         # if i % 100 == 0 and i != 0:
         if pwm_vec[i] == 1:
             x = odeint(model_closed, x0, tspan, args=(u1[i], d1[i], R, L, C))
-        elif pre_val == 0:
+        else:
             x = odeint(model_open, x0, tspan, args=(u1[i], d1[i], R, L, C))
         # store solution for plotting
         pre_val = pwm_vec[i]
@@ -129,12 +129,12 @@ def Solve_Dif_equations():
 
 
 Vg = 12.0
-fs = 20000.0
+fs = 10000.0
 
 L = 850.0e-6
 C = 100.0e-6
-R = 18.0
-D = 0.9
+R = 2.5
+D = 0.5
 
 stop_time = 0.05
 t = np.arange(0, (stop_time - 1 / fs), 1.0 / fs)
