@@ -5,15 +5,15 @@ import matplotlib.pyplot as plt
 import time
 
 
-def pwm(t, D):
+def pwm(t, P, D):
     pwm_vec = np.empty_like(t)
 
-    p = D * 100
+    p = D * P
     Cycle = 0
 
     for i in range(0, len(pwm_vec)):
 
-        if Cycle == 100:
+        if Cycle == P:
             Cycle = 0
 
         if Cycle < p:
@@ -81,7 +81,7 @@ def Solve_Dif_equations():
     # store solution
     il1 = np.empty_like(t)
     vc1 = np.empty_like(t)
-    pwm_vec = pwm(t, D)
+    pwm_vec = pwm(t, P, D)
     pre_val = 0
 
     # record initial conditions
@@ -122,22 +122,23 @@ def Solve_Dif_equations():
     plt.plot(t, vc1, 'b')
     # plt.legend(loc='best')
     plt.title('Tensão no Capacitor')
-    plt.xlabel('t (ms)')
+    plt.xlabel('t (s)')
     plt.ylabel('V (V)')
     plt.tight_layout()
     plt.grid(True)
 
 
-Vg = 12.0
+Vg = 8.0
 fs = 10000.0
+P = 100  # quantidade de pontos por período de chaveamento
 
 L = 729.0e-6
 C = 20.0e-6
 R = 2.5
-D = 0.5
+D = 0.413
 
-stop_time = 0.05
-t = np.arange(0, (stop_time - 1 / fs), 1.0 / fs)
+stop_time = 0.01
+t = np.arange(0, (stop_time - 1 / (fs * P)), 1.0 / (fs * P))
 Solve_Dif_equations()
 
 plt.show()
