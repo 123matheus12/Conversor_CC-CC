@@ -1,8 +1,6 @@
-from __future__ import unicode_literals  # accents texts in matplotlib
 from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
-import time
 
 
 def pwm(t, P, D):
@@ -60,46 +58,24 @@ def Solve_Dif_equations():
     # Razão cíclica constante
     d1 = D * np.ones(len(t))
 
-    # # Razão cíclica com degrau
-    # D1 = 0.8
-    # D2 = 0.5
-    # d_temp = []
-    # for n in t:
-    #     if n < (t[-1] / 2):
-    #         d_temp.append(D1)
-    #     else:
-    #         d_temp.append(D2)
-    # d1 = d_temp
-
-    # # Razão cíclica variável
-    # f = 60.0
-    # w = 2*np.pi*f
-    # Vp = Vg/2
-    # Vc1 = Vp + Vp*np.sin(w*t)
-    # d1 = Vc1/Vg
-
     # store solution
     il1 = np.empty_like(t)
     vc1 = np.empty_like(t)
     pwm_vec = pwm(t, P, D)
-    pre_val = 0
 
     # record initial conditions
     il1[0] = x0[0]
     vc1[0] = x0[1]
-    x = odeint(model_closed, x0, [t[0], t[1]], args=(u1[0], d1[0], R, L, C))
     # solve ODE
     for i in range(1, len(t)):
         # span for next time step
         tspan = [t[i - 1], t[i]]
         # solve for next step
-        # if i % 100 == 0 and i != 0:
         if pwm_vec[i] == 1:
             x = odeint(model_closed, x0, tspan, args=(u1[i], d1[i], R, L, C))
         else:
             x = odeint(model_open, x0, tspan, args=(u1[i], d1[i], R, L, C))
         # store solution for plotting
-        pre_val = pwm_vec[i]
         il1[i] = x[1][0]
         vc1[i] = x[1][1]
         # next initial condition
@@ -112,8 +88,6 @@ def Solve_Dif_equations():
     # plt.plot(t, il1, 'r', label = '${i_{L}}_{Conversor}$')
     plt.plot(t, pwm_vec, 'r')
     plt.title('PWM')
-    # plt.legend(loc='best')
-    # plt.xlabel('t (ms)')
     plt.ylabel('i (A)')
     plt.tight_layout()
     plt.grid(True)
@@ -128,7 +102,7 @@ def Solve_Dif_equations():
     plt.grid(True)
 
 
-Vg = 8.0
+Vg = 12.0
 fs = 10000.0
 P = 100  # quantidade de pontos por período de chaveamento
 
@@ -137,7 +111,7 @@ C = 20.0e-6
 R = 2.5
 D = 0.413
 
-stop_time = 0.01
+stop_time = 0.004
 t = np.arange(0, (stop_time - 1 / (fs * P)), 1.0 / (fs * P))
 Solve_Dif_equations()
 
