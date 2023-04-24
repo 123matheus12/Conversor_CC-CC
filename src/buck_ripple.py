@@ -29,7 +29,7 @@ def model_open(x, t, u1, d1, R, L, C):
     vc1 = x[1]
 
     dil1dt = 0 * il1 + (-1 / L) * vc1 + 0 * Vg
-    dvc1dt = (1 / C) * il1 + (-1 / (C * R)) * vc1 + (- 1 / C) * Vg
+    dvc1dt = (1 / C) * il1 + (-1 / (C * R)) * vc1
 
     dxdt = [dil1dt, dvc1dt]
 
@@ -41,7 +41,7 @@ def model_closed(x, t, u1, d1, R, L, C):
     vc1 = x[1]
 
     dil1dt = 0 * il1 + (-1 / L) * vc1 + (d1 / L) * Vg
-    dvc1dt = (1 / C) * il1 + (-1 / (C * R)) * vc1 + (- 1 / C) * Vg
+    dvc1dt = (1 / C) * il1 + (-1 / (C * R)) * vc1
 
     dxdt = [dil1dt, dvc1dt]
 
@@ -88,7 +88,7 @@ def Solve_Dif_equations():
     # plt.plot(t, il1, 'r', label = '${i_{L}}_{Conversor}$')
     plt.plot(t, pwm_vec, 'r')
     plt.title('PWM')
-    plt.ylabel('i (A)')
+    plt.ylabel('PWM')
     plt.tight_layout()
     plt.grid(True)
 
@@ -103,7 +103,7 @@ def Solve_Dif_equations():
 
 
 Vg = 12.0
-fs = 10000.0
+fs = 20000.0
 P = 100  # quantidade de pontos por período de chaveamento
 
 L = 729.0e-6
