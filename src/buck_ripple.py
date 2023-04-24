@@ -103,13 +103,13 @@ def Solve_Dif_equations():
 
 
 Vg = 12.0
-fs = 20000.0
+fs = 10000.0
 P = 100  # quantidade de pontos por período de chaveamento
 
 L = 729.0e-6
 C = 20.0e-6
 R = 2.5
-D = 0.413
+D = 0.5
 
 stop_time = 0.004
 t = np.arange(0, (stop_time - 1 / (fs * P)), 1.0 / (fs * P))
