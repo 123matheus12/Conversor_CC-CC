@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def pwm(t, P, D):
+def pwm(t, P, D):  # gerar um vetor pwm, com P pontos por período na razão cíclica de D.
     pwm_vec = np.empty_like(t)
 
     p = D * P
@@ -24,7 +24,7 @@ def pwm(t, P, D):
     return pwm_vec
 
 
-def model_open(x, t, u1, d1, R, L, C):
+def model_open(x, t, u1, d1, R, L, C):  # modelo para chave aberta
     il1 = x[0]
     vc1 = x[1]
 
@@ -36,7 +36,7 @@ def model_open(x, t, u1, d1, R, L, C):
     return dxdt
 
 
-def model_closed(x, t, u1, d1, R, L, C):
+def model_closed(x, t, u1, d1, R, L, C):  # modelo para chave fechada
     il1 = x[0]
     vc1 = x[1]
 
@@ -84,8 +84,8 @@ def Solve_Dif_equations():
     plt.figure()
 
     plt.subplot(211)  # create window plot with 2 rows and 2 columns
-    # plt.subplots_adjust(hspace=0.5)
-    # plt.plot(t, il1, 'r', label = '${i_{L}}_{Conversor}$')
+    plt.subplots_adjust(hspace=0.5)
+    plt.plot(t, il1, 'r', label = '${i_{L}}_{Conversor}$')
     plt.plot(t, pwm_vec, 'r')
     plt.title('PWM')
     plt.ylabel('PWM')
