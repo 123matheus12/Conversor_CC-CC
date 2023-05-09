@@ -1,0 +1,117 @@
+<mxfile host="app.diagrams.net" modified="2023-05-09T12:21:53.364Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/112.0" etag="s8ffHLUWaeyjqnBh_t5x" version="21.2.9" type="device">
+  <diagram name="Página-1" id="zrK_C9ey-3mwq9Kld8iw">
+    <mxGraphModel dx="1823" dy="964" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-1" value="&lt;div&gt;Obter os valores das&lt;/div&gt;&lt;div&gt;variáveis a paritr da&lt;/div&gt;&lt;div&gt;interface&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" parent="1" vertex="1">
+          <mxGeometry x="304" y="110" width="176" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="392" y="330" as="sourcePoint" />
+            <mxPoint x="392" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-4" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="LgOgUrD_LnBNKjPmzro0-1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="370" y="510" as="sourcePoint" />
+            <mxPoint x="392" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" target="LgOgUrD_LnBNKjPmzro0-10" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="392" y="470" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="LgOgUrD_LnBNKjPmzro0-10" target="LgOgUrD_LnBNKjPmzro0-12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-10" value="&lt;div&gt;Armazenar os valores iniciais de corrente e tensão&lt;/div&gt;(para a próxima iteração)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="304" y="520" width="176" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="LgOgUrD_LnBNKjPmzro0-12" target="LgOgUrD_LnBNKjPmzro0-15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="LgOgUrD_LnBNKjPmzro0-12" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="540" y="705" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-12" value="&lt;div&gt;Nº de iterações &amp;lt; &lt;br&gt;&lt;/div&gt;&lt;div&gt;vetor tempo&lt;br&gt;&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="307" y="660" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="LgOgUrD_LnBNKjPmzro0-15" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="392" y="940" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="LgOgUrD_LnBNKjPmzro0-15" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="256" y="845" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-15" value="vetor PWM == 1" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="307" y="800" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-17" value="Verdadeiro" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="400" y="760" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="LgOgUrD_LnBNKjPmzro0-10" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="985" />
+              <mxPoint x="40" y="565" />
+            </Array>
+            <mxPoint x="304" y="985" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-21" value="Verdadeiro" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="400" y="900" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" target="LgOgUrD_LnBNKjPmzro0-10" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="40" y="845" />
+              <mxPoint x="40" y="565" />
+            </Array>
+            <mxPoint x="80" y="845" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-26" value="Falso" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="256" y="820" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="LgOgUrD_LnBNKjPmzro0-29" value="&lt;div&gt;Falso&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="470" y="680" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yNy9fHijdYF6f83uaKpo-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="yNy9fHijdYF6f83uaKpo-2" target="LgOgUrD_LnBNKjPmzro0-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="yNy9fHijdYF6f83uaKpo-2" value="Inicio" style="rounded=1;whiteSpace=wrap;html=1;glass=0;" vertex="1" parent="1">
+          <mxGeometry x="363.75" y="30" width="56.5" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="yNy9fHijdYF6f83uaKpo-4" value="Gerar um vetor de tempo a partir das variáveis" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="304" y="240" width="176" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="yNy9fHijdYF6f83uaKpo-6" value="Gerar um vetor de PWM a partir das variáveis" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="304" y="380" width="176" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="yNy9fHijdYF6f83uaKpo-7" value="Resolver o modelo de chave fechada" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="301" y="940" width="176" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="yNy9fHijdYF6f83uaKpo-9" value="&lt;div&gt;Resolver o modelo de chave aberta&lt;/div&gt;" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="800" width="176" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="yNy9fHijdYF6f83uaKpo-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="yNy9fHijdYF6f83uaKpo-10" target="yNy9fHijdYF6f83uaKpo-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="yNy9fHijdYF6f83uaKpo-10" value="Plotar os gŕaficos &lt;b&gt;tensão do capacitor x tempo&lt;/b&gt; e &lt;b&gt;corrente no indutor x tempo&lt;/b&gt;" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="540" y="660" width="176" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="yNy9fHijdYF6f83uaKpo-13" value="Fim" style="rounded=1;whiteSpace=wrap;html=1;glass=0;" vertex="1" parent="1">
+          <mxGeometry x="760" y="690" width="56.5" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
