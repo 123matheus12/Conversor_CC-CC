@@ -24,11 +24,11 @@ def pwm(t, P, D):  # gerar um vetor pwm, com P pontos por período na razão cí
     return pwm_vec
 
 
-def model_open(x, t, u1, R, Rl, L, C):  # modelo para chave aberta
+def model_open(x, t, u1, Vd, R, Rl, Rd, L, C):  # modelo para chave aberta
     il1 = x[0]
     vc1 = x[1]
 
-    dil1dt = (-Rl / L) * il1 + (-1 / L) * vc1 + 0 * Vg
+    dil1dt = (-(Rl + Rd) / L) * il1 + (-1 / L) * vc1 + (-1 / L) * Vd + 0 * Vg
     dvc1dt = (1 / C) * il1 + (-1 / (C * R)) * vc1
 
     dxdt = [dil1dt, dvc1dt]
@@ -36,11 +36,11 @@ def model_open(x, t, u1, R, Rl, L, C):  # modelo para chave aberta
     return dxdt
 
 
-def model_closed(x, t, u1, R, Rl, L, C):  # modelo para chave fechada
+def model_closed(x, t, u1, R, Rl, Rds, L, C):  # modelo para chave fechada
     il1 = x[0]
     vc1 = x[1]
 
-    dil1dt = (-Rl / L) * il1 + (-1 / L) * vc1 + (1 / L) * Vg
+    dil1dt = (-(Rl + Rds) / L) * il1 + (-1 / L) * vc1 + (1 / L) * Vg
     dvc1dt = (1 / C) * il1 + (-1 / (C * R)) * vc1
 
     dxdt = [dil1dt, dvc1dt]
@@ -69,9 +69,9 @@ def Solve_Dif_equations():
         tspan = [t[i - 1], t[i]]
         # solve for next step
         if pwm_vec[i] == 1:
-            x = odeint(model_closed, x0, tspan, args=(u1[i], R, Rl, L, C))
+            x = odeint(model_closed, x0, tspan, args=(u1[i], R, Rl, Rds, L, C))
         else:
-            x = odeint(model_open, x0, tspan, args=(u1[i], R, Rl, L, C))
+            x = odeint(model_open, x0, tspan, args=(u1[i], Vd, R, Rl, Rd, L, C))
         # store solution for plotting
         il1[i] = x[1][0]
         vc1[i] = x[1][1]
@@ -107,7 +107,10 @@ L = 729.0e-6
 C = 20.0e-6
 R = 2.5
 D = 0.413
-Rl = 0.02
+Rl = 0.0025
+Rds = 0.0025
+Rd = 0.0025
+Vd = 0.7
 
 stop_time = 0.004
 t = np.arange(0, (stop_time - 1 / (fs * P)), 1.0 / (fs * P))
