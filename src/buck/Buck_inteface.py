@@ -27,16 +27,21 @@ def make_window(theme):
         [sg.Text("Tensão:", size=(10, 1)), sg.In(default_text="12", size=(25, 1), enable_events=True, key="-Vg-"),
          sg.Text("Volts"), ],
         [sg.Button("Simulate"), ],
+        [sg.Text("Cálculo do valor RMS:"), ],
+        [sg.Slider(range=(0, 0.004), resolution=0.0001, orientation='h', key='-tempo_rms_min-'),
+         sg.Slider(range=(0, 0.004), resolution=0.0001, orientation='h', key='-tempo_rms_max-'), ],
+        [sg.Text("Valor RMS na carga:"), sg.Text("0", key='-rms-'), sg.Text("Valor médio na carga:"), sg.Text("0", key='-medio-'), ],
     ]
+
     selection_layout = [
         [sg.Text("Selecione o tipo de conversor: "), sg.OptionMenu(values=('Buck', 'Boost', 'Buck-Boost'), default_value='Buck', k='-CONV-'), ],
         [sg.Image(key="-IMAGE-"), ],
-        [sg.Text("Chave:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
-        [sg.Text("Fonte:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
-        [sg.Text("Diodo:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
-        [sg.Text("Indutor:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
-        [sg.Text("Capacitor:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
-        [sg.Text("Carga:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
+        [sg.Text("Chave:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-sw_v-'), sg.Checkbox('Corrente', default=True, k='-sw_i-'), ],
+        [sg.Text("Fonte:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-source_v-'), sg.Checkbox('Corrente', default=True, k='-source_i-'), ],
+        [sg.Text("Diodo:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-dio_v-'), sg.Checkbox('Corrente', default=True, k='-dio_i-'), ],
+        [sg.Text("Indutor:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-ind_v-'), sg.Checkbox('Corrente', default=True, k='-ind_i-'), ],
+        [sg.Text("Capacitor:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-cap_v-'), sg.Checkbox('Corrente', default=True, k='-cap_i-'), ],
+        [sg.Text("Carga:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-res_v-'), sg.Checkbox('Corrente', default=True, k='-res_i-'), ],
 
     ]
 
@@ -137,7 +142,7 @@ def Solve_Dif_equations(t, Vg, P, D, R, L, C):
 
     plt.subplot(311)  # create window plot with 2 rows and 2 columns
     plt.subplots_adjust(hspace=0.5)
-    plt.plot(t, il1, 'r', label='${i_{L}}_{Conversor}$')
+    plt.plot(t, il1, 'r', label='Indutor')
     plt.title('Corrente no Indutor')
     plt.xlabel('t (s)')
     plt.ylabel('I (A)')
@@ -151,10 +156,12 @@ def Solve_Dif_equations(t, Vg, P, D, R, L, C):
     plt.grid(True)
 
     plt.subplot(313)
-    plt.plot(t, pwm_vec, 'g')
+    plt.plot(t, pwm_vec, 'g', label='PWM')
     plt.title('PWM')
     plt.xlabel('t (s)')
     plt.grid(True)
+
+    plt.legend()
 
 
 # Run the Event Loop
