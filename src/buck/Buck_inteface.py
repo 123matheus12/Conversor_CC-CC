@@ -2,56 +2,60 @@ import PySimpleGUI as sg
 from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import os.path
 
-# First the window layout in 2 columns
-file_list_column = [
-    [
-        sg.Text("Indutor       "),
-        sg.In(default_text="729", size=(25, 1), enable_events=True, key="-IND-"),
-        sg.Text("uH"),
-    ],
-    [
-        sg.Text("Capacitor   "),
-        sg.In(default_text="20", size=(25, 1), enable_events=True, key="-CAP-"),
-        sg.Text("uC"),
-    ],
-    [
-        sg.Text("Resistência"),
-        sg.In(default_text="2.5", size=(25, 1), enable_events=True, key="-RES-"),
-        sg.Text("Ohm"),
-    ],
-    [
-        sg.Text("Frequência "),
-        sg.In(default_text="10000", size=(25, 1), enable_events=True, key="-F-"),
-        sg.Text("Hz"),
-    ],
-    [
-        sg.Text("Passo        "),
-        sg.In(default_text="100", size=(25, 1), enable_events=True, key="-P-"),
-    ],
-    [
-        sg.Text("Duty Clycle"),
-        sg.In(default_text="0.413", size=(25, 1), enable_events=True, key="-D-"),
-    ],
-    [
-        sg.Text("Tensão      "),
-        sg.In(default_text="12", size=(25, 1), enable_events=True, key="-Vg-"),
-        sg.Text("Volts"),
-    ],
-    [
-        sg.Button("Simulate"),
-    ],
-]
 
-# ----- Full layout -----
-layout = [
-    [
-        sg.Column(file_list_column),
+def make_window(theme):
+    sg.theme(theme)
+    menu_def = [['&Application', ['&Exit']],
+                ['&Help', ['&About']]]
+
+    right_click_menu_def = [[], ['Exit']]
+
+    # First the window layout in 2 columns
+    input_layout = [
+        [sg.Text("Indutor:", size=(10, 1)), sg.In(default_text="729", size=(25, 1), enable_events=True, key="-IND-"),
+         sg.Text("uH"), ],
+        [sg.Text("Capacitor:", size=(10, 1)), sg.In(default_text="20", size=(25, 1), enable_events=True, key="-CAP-"),
+         sg.Text("uC"), ],
+        [sg.Text("Resistência:", size=(10, 1)), sg.In(default_text="2.5", size=(25, 1), enable_events=True, key="-RES-"),
+         sg.Text("Ohm"), ],
+        [sg.Text("Frequência:", size=(10, 1)), sg.In(default_text="10000", size=(25, 1), enable_events=True, key="-F-"),
+         sg.Text("Hz"), ],
+        [sg.Text("Passo:", size=(10, 1)), sg.In(default_text="100", size=(25, 1), enable_events=True, key="-P-"), ],
+        [sg.Text("Duty Clycle:", size=(10, 1)), sg.In(default_text="0.413", size=(25, 1), enable_events=True, key="-D-"), ],
+        [sg.Text("Tensão:", size=(10, 1)), sg.In(default_text="12", size=(25, 1), enable_events=True, key="-Vg-"),
+         sg.Text("Volts"), ],
+        [sg.Button("Simulate"), ],
     ]
-]
+    selection_layout = [
+        [sg.Text("Selecione o tipo de conversor: "), sg.OptionMenu(values=('Buck', 'Boost', 'Buck-Boost'), default_value='Buck', k='-CONV-'), ],
+        [sg.Image(key="-IMAGE-"), ],
+        [sg.Text("Chave:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
+        [sg.Text("Fonte:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
+        [sg.Text("Diodo:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
+        [sg.Text("Indutor:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
+        [sg.Text("Capacitor:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
+        [sg.Text("Carga:", size=(8, 1)), sg.Checkbox('Tensão', default=True, k='-SW_V-'), sg.Checkbox('Corrente', default=True, k='-SW_I-'), ],
 
-window = sg.Window("Conversor CC-CC", layout)
+    ]
+
+    # ----- Full layout -----
+    layout = [[sg.MenubarCustom(menu_def, key='-MENU-', font='Courier 15', tearoff=True)],
+              [sg.Text('Conversores CC-CC', size=(38, 1), justification='center', font=("Helvetica", 16),
+                       relief=sg.RELIEF_RIDGE, k='-TEXT HEADING-', enable_events=True)]]
+
+    layout += [[sg.TabGroup([[sg.Tab('Seleção', selection_layout),
+                              sg.Tab('Parâmetros', input_layout), ]], key='-TAB GROUP-', expand_x=True,
+                            expand_y=True),
+                ]]
+
+    layout[-1].append(sg.Sizegrip())
+    window = sg.Window('Conversores', layout, right_click_menu=right_click_menu_def,
+                       right_click_menu_tearoff=True, grab_anywhere=True, resizable=True, margins=(0, 0),
+                       use_custom_titlebar=True, finalize=True, keep_on_top=True)
+    window.set_min_size(window.size)
+    return window
 
 
 def pwm(t, P, D):  # gerar um vetor pwm, com P pontos por período na razão cíclica de D.
@@ -141,7 +145,6 @@ def Solve_Dif_equations(t, Vg, P, D, R, L, C):
 
     plt.subplot(312)
     plt.plot(t, vc1, 'b')
-    # plt.legend(loc='best')
     plt.title('Tensão no Capacitor')
     plt.xlabel('t (s)')
     plt.ylabel('V (V)')
@@ -155,28 +158,44 @@ def Solve_Dif_equations(t, Vg, P, D, R, L, C):
 
 
 # Run the Event Loop
-while True:
-    event, values = window.read()
-    if event == "Exit" or event == sg.WIN_CLOSED:
-        break
-    # Folder name was filled in, make a list of files in the folder
-    if event == "Simulate":
+def main():
+    window = make_window(sg.theme())
+
+    while True:
+        event, values = window.read(timeout=100)
+        if event == "Exit" or event == sg.WIN_CLOSED:
+            break
+
         try:
-            Vg = float(values["-Vg-"])
-            fs = float(values["-F-"])
-            P = float(values["-P-"])
-            L = float(values["-IND-"]) * 10 ** (-6)
-            C = float(values["-CAP-"]) * 10 ** (-6)
-            R = float(values["-RES-"])
-            D = float(values["-D-"])
-
-            stop_time = 0.004
-
-            t = np.arange(0, (stop_time - 1 / (fs * P)), 1.0 / (fs * P))
-
-            Solve_Dif_equations(t, Vg, P, D, R, L, C)
-            plt.show()
+            filename = os.path.join("/home/matheus/PycharmProjects/pythonProject/src/buck/imagens/", values["-CONV-"] + ".png")
+            window["-IMAGE-"].update(filename=filename)
         except:
             pass
 
-window.close()
+        # Folder name was filled in, make a list of files in the folder
+        if event == "Simulate":
+            try:
+                Vg = float(values["-Vg-"])
+                fs = float(values["-F-"])
+                P = float(values["-P-"])
+                L = float(values["-IND-"]) * 10 ** (-6)
+                C = float(values["-CAP-"]) * 10 ** (-6)
+                R = float(values["-RES-"])
+                D = float(values["-D-"])
+
+                stop_time = 0.004
+
+                t = np.arange(0, (stop_time - 1 / (fs * P)), 1.0 / (fs * P))
+
+                Solve_Dif_equations(t, Vg, P, D, R, L, C)
+                plt.show()
+            except:
+                sg.popup("Coloque valores válidos!", keep_on_top=True)
+
+    window.close()
+    exit(0)
+
+
+if __name__ == '__main__':
+    sg.theme('green')
+    main()
