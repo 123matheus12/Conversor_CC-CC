@@ -3,6 +3,7 @@ from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
 import os.path
+import tools
 
 
 def make_window(theme):
@@ -26,11 +27,19 @@ def make_window(theme):
         [sg.Text("Duty Clycle:", size=(10, 1)), sg.In(default_text="0.413", size=(25, 1), enable_events=True, key="-D-"), ],
         [sg.Text("Tensão:", size=(10, 1)), sg.In(default_text="12", size=(25, 1), enable_events=True, key="-Vg-"),
          sg.Text("Volts"), ],
+        [sg.Text("Rl:", size=(10, 1)), sg.In(default_text="0.0025", size=(25, 1), enable_events=True, key="-Rl-"),
+        sg.Text("Ohm"), ],
+        [sg.Text("Rds:", size=(10, 1)), sg.In(default_text="0.0025", size=(25, 1), enable_events=True, key="-Rds-"),
+        sg.Text("Ohm"), ],
+        [sg.Text("Rd:", size=(10, 1)), sg.In(default_text="0.0025", size=(25, 1), enable_events=True, key="-Rd-"),
+        sg.Text("Ohm"), ],
+        [sg.Text("Vd:", size=(10, 1)), sg.In(default_text="0.7", size=(25, 1), enable_events=True, key="-Vd-"),
+        sg.Text("Volts"), ],
         [sg.Button("Simulate"), ],
         [sg.Text("Cálculo do valor RMS:"), ],
-        [sg.Slider(range=(0, 0.004), resolution=0.0001, orientation='h', key='-tempo_rms_min-'),
-         sg.Slider(range=(0, 0.004), resolution=0.0001, orientation='h', key='-tempo_rms_max-'), ],
-        [sg.Text("Valor RMS na carga:"), sg.Text("0", key='-rms-'), sg.Text("Valor médio na carga:"), sg.Text("0", key='-medio-'), ],
+        [sg.Slider(range=(0, 0.004), resolution=0.0001, orientation='h', enable_events=True, key='-tempo_rms_min-'),
+         sg.Slider(range=(0, 0.004), resolution=0.0001, orientation='h', enable_events=True, key='-tempo_rms_max-'), ],
+        [sg.Text("Valor RMS na carga:"), sg.Text("0", key='-rms-'), sg.Text("Valor médio na carga:"), sg.Text("0", key='-mean-'), ],
     ]
 
     selection_layout = [
@@ -63,118 +72,19 @@ def make_window(theme):
     return window
 
 
-def pwm(t, P, D):  # gerar um vetor pwm, com P pontos por período na razão cíclica de D.
-    pwm_vec = np.empty_like(t)
-
-    p = D * P
-    Cycle = 0
-
-    for i in range(0, len(pwm_vec)):
-
-        if Cycle == P:
-            Cycle = 0
-
-        if Cycle < p:
-            pwm_vec[i] = 1
-        else:
-            pwm_vec[i] = 0
-
-        Cycle += 1
-
-    return pwm_vec
-
-
-def model_open(x, t, u1, Vg, R, L, C):  # modelo para chave aberta
-    il1 = x[0]
-    vc1 = x[1]
-
-    dil1dt = 0 * il1 + (-1 / L) * vc1 + 0 * Vg
-    dvc1dt = (1 / C) * il1 + (-1 / (C * R)) * vc1
-
-    dxdt = [dil1dt, dvc1dt]
-
-    return dxdt
-
-
-def model_closed(x, t, u1, Vg, R, L, C):  # modelo para chave fechada
-    il1 = x[0]
-    vc1 = x[1]
-
-    dil1dt = 0 * il1 + (-1 / L) * vc1 + (1 / L) * Vg
-    dvc1dt = (1 / C) * il1 + (-1 / (C * R)) * vc1
-
-    dxdt = [dil1dt, dvc1dt]
-
-    return dxdt
-
-
-def Solve_Dif_equations(t, Vg, P, D, R, L, C):
-    # initial condition
-    x0 = [0, 0]
-
-    # inputs
-    u1 = Vg * np.ones(len(t))
-
-    # store solution
-    il1 = np.empty_like(t)
-    vc1 = np.empty_like(t)
-    pwm_vec = pwm(t, P, D)
-
-    # record initial conditions
-    il1[0] = x0[0]
-    vc1[0] = x0[1]
-    # solve ODE
-    for i in range(1, len(t)):
-        # span for next time step
-        tspan = [t[i - 1], t[i]]
-        # solve for next step
-        if pwm_vec[i] == 1:
-            x = odeint(model_closed, x0, tspan, args=(u1[i], Vg, R, L, C))
-        else:
-            x = odeint(model_open, x0, tspan, args=(u1[i], Vg, R, L, C))
-        # store solution for plotting
-        il1[i] = x[1][0]
-        vc1[i] = x[1][1]
-        # next initial condition
-        x0 = x[1]
-
-    plt.figure()
-
-    plt.subplot(311)  # create window plot with 2 rows and 2 columns
-    plt.subplots_adjust(hspace=0.5)
-    plt.plot(t, il1, 'r', label='Indutor')
-    plt.title('Corrente no Indutor')
-    plt.xlabel('t (s)')
-    plt.ylabel('I (A)')
-    plt.grid(True)
-
-    plt.subplot(312)
-    plt.plot(t, vc1, 'b')
-    plt.title('Tensão no Capacitor')
-    plt.xlabel('t (s)')
-    plt.ylabel('V (V)')
-    plt.grid(True)
-
-    plt.subplot(313)
-    plt.plot(t, pwm_vec, 'g', label='PWM')
-    plt.title('PWM')
-    plt.xlabel('t (s)')
-    plt.grid(True)
-
-    plt.legend()
-
-
 # Run the Event Loop
 def main():
     window = make_window(sg.theme())
+    Solver = tools.Solver()
 
     while True:
         event, values = window.read(timeout=100)
         if event == "Exit" or event == sg.WIN_CLOSED:
             break
-
+        
+        filename = os.path.dirname(os.path.abspath(__file__))
         try:
-            filename = os.path.join("/home/matheus/PycharmProjects/pythonProject/src/buck/imagens/", values["-CONV-"] + ".png")
+            filename = filename + "\\imagens\\" + values["-CONV-"] + "_286X117.png"
             window["-IMAGE-"].update(filename=filename)
         except:
             pass
@@ -183,21 +93,44 @@ def main():
         if event == "Simulate":
             try:
                 Vg = float(values["-Vg-"])
+                Vd = float(values["-Vd-"])
                 fs = float(values["-F-"])
                 P = float(values["-P-"])
                 L = float(values["-IND-"]) * 10 ** (-6)
                 C = float(values["-CAP-"]) * 10 ** (-6)
                 R = float(values["-RES-"])
+                Rl = float(values["-Rl-"])
+                Rds = float(values["-Rds-"])
+                Rd = float(values["-Rd-"])
                 D = float(values["-D-"])
 
                 stop_time = 0.004
 
                 t = np.arange(0, (stop_time - 1 / (fs * P)), 1.0 / (fs * P))
 
-                Solve_Dif_equations(t, Vg, P, D, R, L, C)
+                if values["-CONV-"] == "Buck":
+                    Solver.Solve_Dif_equations_buck(t, Vg, Vd, P, D, R, Rl, Rds, Rd, L, C)
+                elif values["-CONV-"] == "Boost":
+                    Solver.Solve_Dif_equations_boost(t, Vg, Vd, P, D, R, Rl, Rds, Rd, L, C)
+                elif values["-CONV-"] == "Buck-Boost":
+                    Solver.Solve_Dif_equations_buck_boost(t, Vg, Vd, P, D, R, Rl, Rds, Rd, L, C)
                 plt.show()
             except:
-                sg.popup("Coloque valores válidos!", keep_on_top=True)
+                sg.popup("Valor Inválido!", keep_on_top=True)
+
+        elif event == "-tempo_rms_min-" or event == "-tempo_rms_max-":
+            try:
+                P = float(values["-P-"])
+                fs = float(values["-F-"])
+                stop_time = 0.004
+                t = np.arange(0, (stop_time - 1 / (fs * P)), 1.0 / (fs * P))
+
+                mean_rms = Solver.calculate_mean_rms(t, float(values["-tempo_rms_min-"]), float(values["-tempo_rms_max-"]))
+                if type(mean_rms == float):
+                    window["-rms-"].update(str(mean_rms[1]))
+                    window["-mean-"].update(str(mean_rms[0]))
+            except:
+                pass
 
     window.close()
     exit(0)
