@@ -288,7 +288,6 @@ class Solver:
                 if a >= setpoint_min and a <= setpoint_max:
                     vector.append(self.v_vector[i])
                 i += 1
-            print(len(vector))
         
         return [self.calc_average(vector), self.calc_rms(vector)]
     
