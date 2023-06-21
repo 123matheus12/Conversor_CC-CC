@@ -84,7 +84,7 @@ def main():
         
         filename = os.path.dirname(os.path.abspath(__file__))
         try:
-            filename = filename + "\\imagens\\" + values["-CONV-"] + "_286X117.png"
+            filename = filename + "/imagens/" + values["-CONV-"] + "_286X117.png"
             window["-IMAGE-"].update(filename=filename)
         except:
             pass
